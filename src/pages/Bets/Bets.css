@@ -259,3 +259,12 @@
     grid-template-columns: 1fr;
   }
 }
+
+.action-edit {
+  color: #93c5fd;
+  background-color: rgba(59, 130, 246, 0.14);
+}
+
+.action-edit:hover {
+  opacity: 0.8;
+}

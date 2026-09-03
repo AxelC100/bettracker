@@ -228,6 +228,16 @@ function Bets() {
 
                           <td>
                             <div className="bet-actions">
+                              <button
+                                type="button"
+                                className="action-edit"
+                                onClick={() =>
+                                  navigate(`/bets/${bet.id}/edit`)
+                                }
+                              >
+                                Editar
+                              </button>
+
                               {bet.status === 'pending' && (
                                 <>
                                   <button
