@@ -1,0 +1,208 @@
+.new-bet-page {
+  min-height: 100vh;
+  padding: 40px 24px;
+  background-color: #0b1120;
+  color: #f8fafc;
+}
+
+.new-bet-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.new-bet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.new-bet-eyebrow {
+  color: #60a5fa;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.new-bet-header h1 {
+  font-size: 34px;
+  margin-bottom: 6px;
+}
+
+.new-bet-header p {
+  color: #94a3b8;
+}
+
+.back-button,
+.cancel-button,
+.save-button {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.back-button {
+  padding: 11px 16px;
+  background-color: #1e293b;
+  color: #f8fafc;
+}
+
+.back-button:hover {
+  background-color: #334155;
+}
+
+.new-bet-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-card {
+  padding: 26px;
+  background-color: #111827;
+  border: 1px solid #243044;
+  border-radius: 16px;
+}
+
+.form-card h2 {
+  font-size: 19px;
+  margin-bottom: 22px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #374151;
+  border-radius: 10px;
+  background-color: #0f172a;
+  color: #f8fafc;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #3b82f6;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancel-button {
+  padding: 13px 18px;
+  background-color: #1e293b;
+  color: #f8fafc;
+}
+
+.cancel-button:hover {
+  background-color: #334155;
+}
+
+.save-button {
+  padding: 13px 20px;
+  background-color: #2563eb;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #1d4ed8;
+}
+
+@media (max-width: 700px) {
+  .new-bet-page {
+    padding: 24px 16px;
+  }
+
+  .new-bet-header {
+    flex-direction: column;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .back-button {
+    width: 100%;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .cancel-button,
+  .save-button {
+    width: 100%;
+  }
+
+}
+
+.bet-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #243044;
+}
+
+.bet-summary div {
+  padding: 16px;
+  background-color: #0f172a;
+  border: 1px solid #243044;
+  border-radius: 12px;
+}
+
+.bet-summary span {
+  display: block;
+  color: #94a3b8;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.bet-summary strong {
+  font-size: 18px;
+}
+
+.form-error {
+  padding: 14px 16px;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 10px;
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+  font-size: 14px;
+}
+
+@media (max-width: 700px) {
+  .bet-summary {
+    grid-template-columns: 1fr;
+  }
+}

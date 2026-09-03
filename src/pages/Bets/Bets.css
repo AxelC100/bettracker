@@ -1,0 +1,261 @@
+.bets-page {
+  min-height: 100vh;
+  padding: 40px 24px;
+  background-color: #0b1120;
+  color: #f8fafc;
+}
+
+.bets-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.bets-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.bets-eyebrow {
+  color: #60a5fa;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.bets-header h1 {
+  font-size: 34px;
+  margin-bottom: 6px;
+}
+
+.bets-header p {
+  color: #94a3b8;
+}
+
+.bets-header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.primary-action,
+.secondary-action {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary-action {
+  background-color: #2563eb;
+  color: white;
+}
+
+.primary-action:hover {
+  background-color: #1d4ed8;
+}
+
+.secondary-action {
+  background-color: #1e293b;
+  color: #f8fafc;
+}
+
+.secondary-action:hover {
+  background-color: #334155;
+}
+
+.bets-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.bets-summary article {
+  padding: 20px;
+  border: 1px solid #243044;
+  border-radius: 14px;
+  background-color: #111827;
+}
+
+.bets-summary span {
+  display: block;
+  color: #94a3b8;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.bets-summary strong {
+  font-size: 25px;
+}
+
+.bets-panel {
+  background-color: #111827;
+  border: 1px solid #243044;
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.bets-table-wrapper {
+  overflow-x: auto;
+}
+
+.bets-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1100px;
+}
+
+.bets-history-table th {
+  text-align: left;
+  color: #94a3b8;
+  font-size: 13px;
+  padding: 14px;
+  border-bottom: 1px solid #273449;
+}
+
+.bets-history-table td {
+  padding: 16px 14px;
+  border-bottom: 1px solid #1f2937;
+  vertical-align: middle;
+  font-size: 14px;
+}
+
+.event-cell,
+.market-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.event-cell span,
+.market-cell span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.status {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status.pending {
+  color: #facc15;
+  background-color: rgba(250, 204, 21, 0.12);
+}
+
+.status.won {
+  color: #86efac;
+  background-color: rgba(34, 197, 94, 0.12);
+}
+
+.status.lost {
+  color: #fca5a5;
+  background-color: rgba(239, 68, 68, 0.12);
+}
+
+.status.void {
+  color: #cbd5e1;
+  background-color: rgba(148, 163, 184, 0.12);
+}
+
+.positive {
+  color: #22c55e;
+}
+
+.negative {
+  color: #ef4444;
+}
+
+.neutral-result {
+  color: #64748b;
+}
+
+.bet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.bet-actions button {
+  border: none;
+  border-radius: 8px;
+  padding: 7px 9px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.action-won {
+  color: #86efac;
+  background-color: rgba(34, 197, 94, 0.14);
+}
+
+.action-lost {
+  color: #fca5a5;
+  background-color: rgba(239, 68, 68, 0.14);
+}
+
+.action-void {
+  color: #cbd5e1;
+  background-color: rgba(148, 163, 184, 0.14);
+}
+
+.action-delete {
+  color: #fda4af;
+  background-color: rgba(244, 63, 94, 0.12);
+}
+
+.action-won:hover,
+.action-lost:hover,
+.action-void:hover,
+.action-delete:hover {
+  opacity: 0.8;
+}
+
+.empty-bets {
+  padding: 70px 20px;
+  text-align: center;
+}
+
+.empty-bets h2 {
+  margin-bottom: 8px;
+}
+
+.empty-bets p {
+  color: #94a3b8;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 900px) {
+  .bets-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 650px) {
+  .bets-page {
+    padding: 24px 16px;
+  }
+
+  .bets-header {
+    flex-direction: column;
+  }
+
+  .bets-header-actions {
+    width: 100%;
+  }
+
+  .bets-header-actions button {
+    flex: 1;
+  }
+
+  .bets-summary {
+    grid-template-columns: 1fr;
+  }
+}
