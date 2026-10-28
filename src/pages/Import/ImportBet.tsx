@@ -1,3 +1,4 @@
+import '../Bets/NewBet.css'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import TicketEditor from '../../components/TicketEditor'
@@ -31,7 +32,7 @@ export default function ImportBet(){
   {!vision&&<p className="integration-status">La extracción automática con IA está preparada y pendiente de conexión. La lectura local permite reconocer el texto y completar un borrador sin enviar la captura a un proveedor externo.</p>}
   <button className="save-button" type="button" disabled={!image||busy||(mode==='openai'&&!consent)||(mode==='local'&&!localOcr)} onClick={()=>void extract()}>{busy?'Leyendo captura…':'Leer y preparar borrador'}</button>
   {error&&<p className="form-error" role="alert">{error}</p>}</section>
-  {!!drafts.length&&<div className="import-grid"><aside className="import-side"><img className="import-preview" src={image} alt={`Captura original: ${fileName}`}/>{rawText&&<div className="form-group"><label htmlFor="ocr-text">Texto reconocido · puede contener errores</label><textarea id="ocr-text" readOnly rows={12} value={rawText}/></div>}</aside><section>
+  {!!drafts.length&&<div className="import-grid"><aside className="import-side"><img className="import-preview" src={image} alt={`Captura original: ${fileName}`}/>{rawText&&<div className="form-group"><label htmlFor="ocr-text">Texto reconocido por filas · revisa posibles errores</label><textarea id="ocr-text" readOnly rows={12} value={rawText}/></div>}</aside><section>
    {drafts.length>1&&<div className="form-group"><label htmlFor="draft-ticket">Ticket de la captura</label><select id="draft-ticket" value={selected} onChange={e=>{setSelected(Number(e.target.value));setReviewed(false)}}>{drafts.map((_,i)=><option key={i} value={i}>Ticket {i+1}{saved.includes(i)?' · guardado':''}</option>)}</select></div>}
    <div className="integration-status"><strong>Revisa antes de guardar</strong><ul>{drafts[selected]!.warnings.map((w,i)=><li key={i} className="import-warning">{w}</li>)}</ul><label className="editor-check"><input type="checkbox" checked={reviewed} onChange={e=>setReviewed(e.target.checked)}/>Confirmo moneda USDT, equipos, fecha/año, mercados, periodos, cuotas y monto de este ticket.</label></div>
    {saved.includes(selected)?<div className="form-card"><p>Ticket guardado.</p><button type="button" className="save-button" onClick={()=>navigate('/bets')}>Ver historial</button></div>:<TicketEditor key={`${drafts[selected]!.ticket.id}`} initial={drafts[selected]!.ticket} label="Guardar ticket revisado" onSave={async ticket=>{if(!reviewed)throw new Error('Revisa los datos y marca la confirmación antes de guardar.');await create(ticket);setSaved(current=>[...current,selected]);setReviewed(false)}}/>}

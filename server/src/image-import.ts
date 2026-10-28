@@ -1,3 +1,4 @@
+import { readingRows } from './ocr-layout.js'
 import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import { mkdtemp, writeFile, rm } from 'node:fs/promises'
@@ -66,12 +67,12 @@ export async function extractImage(image:unknown,mode:string) {
  try {
   const path=join(directory,`capture.${decoded.extension}`);await writeFile(path,decoded.buffer)
   let output:string
-  try { const result=await exec('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File',fileURLToPath(new URL('../scripts/ocr.ps1',import.meta.url)),path],{timeout:30000,maxBuffer:1024*1024,windowsHide:true});output=result.stdout }catch{throw new IntegrationError('La lectura local no pudo procesar la imagen. Usa PNG/JPEG de hasta 4096 píxeles por lado o el modo IA.',422)}
-  let lines:string[];try{lines=JSON.parse(output.replace(/^\uFEFF/,''))}catch{throw new IntegrationError('El lector local no devolvió texto válido.',422)}
+  try { const result=await exec('powershell.exe',['-NoProfile','-ExecutionPolicy','Bypass','-File',fileURLToPath(new URL('../scripts/ocr.ps1',import.meta.url)),path,'3','auto'],{timeout:30000,maxBuffer:1024*1024,windowsHide:true});output=result.stdout }catch{throw new IntegrationError('La lectura local no pudo procesar la imagen. Usa PNG/JPEG de hasta 4096 píxeles por lado o el modo IA.',422)}
+  let lines:string[];try{const recognized=JSON.parse(output.replace(/^\uFEFF/,''));lines=readingRows(recognized.words)}catch{throw new IntegrationError('El lector local no devolvió texto válido.',422)}
   if(!Array.isArray(lines)||!lines.length)throw new IntegrationError('No se pudo reconocer texto. Carga una captura más nítida.',422)
-  if(lines.filter(l=>/^cuotas$/i.test(l.trim())).length>1)throw new IntegrationError('La captura contiene varios tickets. Recorta y carga uno a la vez para la lectura local.',422)
+  if(lines.filter(l=>/^cuotas(?:\s|$)/i.test(l.trim())).length>1)throw new IntegrationError('La captura contiene varios tickets. Recorta y carga uno a la vez para la lectura local.',422)
   const combined=lines.join('\n'),sameGame=/mismo parti|same game/i.test(combined),multi=sameGame||/multi tramo|apuesta m.ltiple|parlay/i.test(combined)
-  const raw={tickets:[{type:sameGame?'same-game':multi?'parlay':'single',currency:null,stake:null,odds:null,actualReturn:null,status:'pending',legs:[{sport:'unknown',event:null,eventDate:null,market:'other',selection:null,includesOvertime:null,odds:null,status:'pending'}],warnings:['Lectura local: el texto se reconoce, pero los campos no se interpretan automáticamente con fiabilidad. Completa el borrador comparándolo con la captura. Los resultados, importes y fechas quedan sin asignar para evitar errores.']}]}
+  const raw={tickets:[{type:sameGame?'same-game':multi?'parlay':'single',currency:null,stake:null,odds:null,actualReturn:null,status:'pending',legs:[{sport:'unknown',event:null,eventDate:null,market:'other',selection:null,includesOvertime:null,odds:null,status:'pending'}],warnings:['El texto está ordenado por filas. En importes decimales se distinguen O/0 e I/1; compara siempre los números con la captura.', 'Lectura local: el texto se reconoce, pero los campos no se interpretan automáticamente con fiabilidad. Completa el borrador comparándolo con la captura. Los resultados, importes y fechas quedan sin asignar para evitar errores.']}]}
   return {mode:'local',drafts:reviewDrafts(raw,decoded.hash),rawText:lines.join('\n')}
  } finally {await rm(directory,{recursive:true,force:true})}
 }

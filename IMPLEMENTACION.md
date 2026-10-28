@@ -84,3 +84,14 @@ La identidad incluye proveedor, deporte, identificador y equipos. Cada modificac
 - [Reglas oficiales de Stake](https://stake.com/es/policies/sportsbook): periodos, prórroga, nulas, participación y SGM. El ticket concreto y sus condiciones siguen siendo la referencia.
 - [API-Sports Basketball](https://api-sports.io/documentation/basketball/basketball-v1.yaml), [Baseball](https://api-sports.io/documentation/baseball/v1) y [API-Football](https://www.api-football.com/documentation-v3): endpoints, estados y estructura de marcadores.
 - [OpenAI: imágenes y visión](https://developers.openai.com/api/docs/guides/images-vision) y [salidas estructuradas](https://developers.openai.com/api/docs/guides/structured-outputs): integración de lectura de imágenes.
+
+
+## Mejora de lectura local por filas
+
+El OCR ahora devuelve las palabras con sus rectángulos. El servidor reconstruye filas por alineación vertical y ordena cada fila de izquierda a derecha; los datos de la columna derecha dejan de acumularse al final del texto. Las imágenes pequeñas se amplían hasta tres veces, respetando el límite del OCR. Para capturas oscuras se prepara una copia temporal con contraste invertido; la captura original no cambia.
+
+La unión de fragmentos decimales y la distinción O/0 e I/1 se restringen a la columna de valores en filas de importes etiquetadas. Nunca se corrigen nombres de equipos por diccionario ni se inventan cifras ausentes. Sigue siendo necesaria la revisión: escudos e iconos pueden aparecer como caracteres y algunas palabras pueden reconocerse mal.
+
+Comprobado con la captura Torino–Como: nombres, marcadores y filas `Cuotas 2,45`, `Apuesta 1.00000000`, `Pago 2.45000000` quedan en su orden visual. La captura simple también se procesó con el flujo completo de lectura local. Se añadieron cuatro pruebas específicas de reconstrucción de filas (19 pruebas en total). La página de importación carga sus estilos explícitamente.
+
+Referencia técnica: [BitmapDecoder.GetSoftwareBitmapAsync de Microsoft](https://learn.microsoft.com/en-us/uwp/api/windows.graphics.imaging.bitmapdecoder.getsoftwarebitmapasync).
