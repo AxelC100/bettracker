@@ -105,7 +105,7 @@
 .bets-history-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 1100px;
+  min-width: 900px;
 }
 
 .bets-history-table th {
@@ -268,3 +268,8 @@
 .action-edit:hover {
   opacity: 0.8;
 }
+.event-cell .ticket-badge { align-self:flex-start;color:#93c5fd; }
+.ticket-legs { max-width:280px; }
+.ticket-legs ol { padding-left:18px; }
+.bets-history-table td:nth-child(2) { max-width:180px; }
+.bets-history-table td:nth-child(4) { white-space:nowrap; }

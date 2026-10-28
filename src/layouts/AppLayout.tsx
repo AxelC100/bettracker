@@ -1,8 +1,12 @@
+import { useState } from 'react'
+import { useAuth } from '../lib/auth'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import './AppLayout.css'
 
 function AppLayout() {
   const navigate = useNavigate()
+  const { user, logout } = useAuth()
+  const [error, setError] = useState('')
 
   return (
     <div className="app-layout">
@@ -23,7 +27,7 @@ function AppLayout() {
           </NavLink>
 
           <NavLink
-            to="/bets"
+            to="/bets" end
             className={({ isActive }) =>
               isActive ? 'sidebar-link active' : 'sidebar-link'
             }
@@ -59,10 +63,13 @@ function AppLayout() {
           </NavLink>
         </nav>
 
+        <NavLink to="/bets/import" className="sidebar-link">Importar captura</NavLink>
         <div className="sidebar-footer">
+          <p>{user?.name}</p>
+          {error && <p role="alert">{error}</p>}
           <button
             type="button"
-            onClick={() => navigate('/login')}
+            onClick={async () => { try { await logout(); navigate('/login') } catch (e) { setError((e as Error).message) } }}
           >
             Cerrar sesión
           </button>

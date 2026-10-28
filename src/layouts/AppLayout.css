@@ -92,3 +92,12 @@
     margin-left: 190px;
   }
 }
+@media (max-width:650px) {
+ .app-layout {display:block;}
+ .sidebar {position:static;width:100%;min-height:0;padding:16px;}
+ .sidebar-brand {padding:0 6px 12px;}
+ .sidebar-nav {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
+ .sidebar-footer {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;}
+ .sidebar-footer button {width:auto;}
+ .app-content {width:100%;margin-left:0;}
+}

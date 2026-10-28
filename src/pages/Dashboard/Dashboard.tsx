@@ -1,4 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { profit as ticketProfit } from '../../lib/tickets'
+import { marketName } from '../../../shared/markets.mjs'
+import { formatAmount } from '../../lib/money'
+import { useBets, type Bet, type BetStatus } from '../../lib/bets'
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Dashboard.css'
 import {
@@ -11,38 +15,13 @@ import {
   CartesianGrid,
 } from 'recharts'
 
-type BetStatus = 'pending' | 'won' | 'lost' | 'void'
-
-type Bet = {
-  id: string
-  sport: string
-  country: string
-  league: string
-  event: string
-  eventDate: string
-  bookmaker: string
-  market: string
-  selection: string
-  odds: number
-  stake: number
-  status: BetStatus
-  potentialReturn: number
-  potentialProfit: number
-  notes: string
-  createdAt: string
-}
 
 function Dashboard() {
   const navigate = useNavigate()
-  const [bets, setBets] = useState<Bet[]>([])
-
-  useEffect(() => {
-    const savedBets = JSON.parse(localStorage.getItem('bets') || '[]')
-    setBets(savedBets)
-  }, [])
+  const { bets } = useBets()
 
   const settledBets = useMemo(
-    () => bets.filter((bet) => bet.status !== 'pending'),
+    () => bets.filter((bet) => bet.status === 'won' || bet.status === 'lost'),
     [bets],
   )
 
@@ -54,11 +33,11 @@ function Dashboard() {
   const netProfit = useMemo(() => {
     return bets.reduce((total, bet) => {
       if (bet.status === 'won') {
-        return total + bet.potentialProfit
+        return total + ticketProfit(bet)
       }
 
       if (bet.status === 'lost') {
-        return total - bet.stake
+        return total + ticketProfit(bet)
       }
 
       return total
@@ -66,10 +45,9 @@ function Dashboard() {
   }, [bets])
 
   const roi = useMemo(() => {
-    if (totalStaked === 0) return 0
-
-    return (netProfit / totalStaked) * 100
-  }, [netProfit, totalStaked])
+    const resolvedStake = settledBets.reduce((total,bet)=>total+bet.stake,0)
+    return resolvedStake ? (netProfit / resolvedStake) * 100 : 0
+  }, [netProfit, settledBets])
 
   const wonBets = bets.filter((bet) => bet.status === 'won').length
 
@@ -111,11 +89,11 @@ function Dashboard() {
       markets[bet.market].staked += bet.stake
 
       if (bet.status === 'won') {
-        markets[bet.market].profit += bet.potentialProfit
+        markets[bet.market].profit += ticketProfit(bet)
       }
 
       if (bet.status === 'lost') {
-        markets[bet.market].profit -= bet.stake
+        markets[bet.market].profit += ticketProfit(bet)
       }
     })
 
@@ -143,16 +121,16 @@ function Dashboard() {
       )
       .map((bet, index) => {
         if (bet.status === 'won') {
-          accumulatedProfit += bet.potentialProfit
+          accumulatedProfit += ticketProfit(bet)
         }
 
         if (bet.status === 'lost') {
-          accumulatedProfit -= bet.stake
+          accumulatedProfit += ticketProfit(bet)
         }
 
         return {
           bet: index + 1,
-          profit: Number(accumulatedProfit.toFixed(2)),
+          profit: Number(accumulatedProfit.toFixed(8)),
           event: bet.event,
         }
       })
@@ -172,16 +150,16 @@ function Dashboard() {
       other: 'Otro',
     }
 
-    return marketNames[market] || market
+    return marketNames[market] || marketName(market)
   }
 
   function getProfit(bet: Bet) {
     if (bet.status === 'won') {
-      return bet.potentialProfit
+      return ticketProfit(bet)
     }
 
     if (bet.status === 'lost') {
-      return -bet.stake
+      return ticketProfit(bet)
     }
 
     return 0
@@ -224,7 +202,7 @@ function Dashboard() {
       <section className="stats-grid">
         <article className="stat-card">
           <span>Total apostado</span>
-          <strong>${totalStaked.toFixed(2)}</strong>
+          <strong>{formatAmount(totalStaked)}</strong>
           <small>{bets.length} apuestas registradas</small>
         </article>
 
@@ -241,7 +219,7 @@ function Dashboard() {
             }
           >
             {netProfit > 0 ? '+' : ''}
-            ${netProfit.toFixed(2)}
+            {formatAmount(netProfit)}
           </strong>
 
           <small>Beneficio neto</small>
@@ -311,7 +289,7 @@ function Dashboard() {
                 <YAxis />
 
                 <Tooltip
-                formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Beneficio']}
+                formatter={(value) => [formatAmount(Number(value)), 'Beneficio']}
                 labelFormatter={(value) => `Apuesta #${value}`}
                 />
 
@@ -418,7 +396,7 @@ function Dashboard() {
 
                         <td>{bet.odds.toFixed(2)}</td>
 
-                        <td>${bet.stake.toFixed(2)}</td>
+                        <td>{formatAmount(bet.stake)}</td>
 
                         <td>
                           <span className={`status ${bet.status}`}>
@@ -430,7 +408,7 @@ function Dashboard() {
                           {bet.status === 'pending' ? (
                             '—'
                           ) : bet.status === 'void' ? (
-                            '$0.00'
+                            formatAmount(0)
                           ) : (
                             <span
                               className={
@@ -439,8 +417,7 @@ function Dashboard() {
                                   : 'negative'
                               }
                             >
-                              {profit >= 0 ? '+' : '-'}$
-                              {Math.abs(profit).toFixed(2)}
+                              {profit >= 0 ? '+' : '-'}{formatAmount(Math.abs(profit))}
                             </span>
                           )}
                         </td>

@@ -7,7 +7,10 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "test:integration": "npm run build && node tests/accounts.integration.mjs",
+    "db:start": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/start-db.ps1"
   },
   "keywords": [],
   "author": "",

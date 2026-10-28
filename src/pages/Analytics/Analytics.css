@@ -6,7 +6,7 @@
 }
 
 .analytics-container {
-  max-width: 1400px;
+  max-width: 1500px;
   margin: 0 auto;
 }
 
@@ -66,14 +66,14 @@
 }
 
 .filter-group label {
-  font-size: 13px;
   color: #94a3b8;
+  font-size: 13px;
 }
 
 .filter-group select {
   padding: 12px 14px;
-  border-radius: 10px;
   border: 1px solid #374151;
+  border-radius: 10px;
   background-color: #0f172a;
   color: #f8fafc;
   outline: none;
@@ -87,17 +87,19 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
-.analytics-summary article {
+.analytics-summary article,
+.advanced-summary article {
   padding: 20px;
   background-color: #111827;
   border: 1px solid #243044;
   border-radius: 14px;
 }
 
-.analytics-summary span {
+.analytics-summary span,
+.advanced-summary span {
   display: block;
   color: #94a3b8;
   font-size: 13px;
@@ -108,14 +110,26 @@
   font-size: 24px;
 }
 
+.advanced-summary {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.advanced-summary strong {
+  font-size: 21px;
+}
+
 .analytics-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
   margin-bottom: 24px;
 }
 
 .analytics-panel {
+  min-width: 0;
   padding: 22px;
   background-color: #111827;
   border: 1px solid #243044;
@@ -142,22 +156,24 @@
 
 .analytics-table {
   width: 100%;
+  min-width: 700px;
   border-collapse: collapse;
-  min-width: 650px;
 }
 
 .analytics-table th {
-  text-align: left;
-  color: #94a3b8;
-  font-size: 12px;
   padding: 12px;
   border-bottom: 1px solid #273449;
+  color: #94a3b8;
+  font-size: 12px;
+  text-align: left;
+  white-space: nowrap;
 }
 
 .analytics-table td {
   padding: 14px 12px;
   border-bottom: 1px solid #1f2937;
   font-size: 13px;
+  vertical-align: middle;
 }
 
 .positive {
@@ -168,12 +184,42 @@
   color: #ef4444;
 }
 
+.confidence-badge {
+  display: inline-block;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.confidence-very-low {
+  color: #cbd5e1;
+  background-color: rgba(148, 163, 184, 0.12);
+}
+
+.confidence-low {
+  color: #facc15;
+  background-color: rgba(250, 204, 21, 0.12);
+}
+
+.confidence-medium {
+  color: #93c5fd;
+  background-color: rgba(59, 130, 246, 0.12);
+}
+
+.confidence-high {
+  color: #86efac;
+  background-color: rgba(34, 197, 94, 0.12);
+}
+
 .league-panel {
   margin-bottom: 40px;
 }
 
-@media (max-width: 1100px) {
-  .analytics-summary {
+@media (max-width: 1200px) {
+  .analytics-summary,
+  .advanced-summary {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -195,7 +241,8 @@
     grid-template-columns: 1fr;
   }
 
-  .analytics-summary {
+  .analytics-summary,
+  .advanced-summary {
     grid-template-columns: 1fr;
   }
 

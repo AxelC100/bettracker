@@ -1,5 +1,8 @@
+import ImportBet from './pages/Import/ImportBet'
+import { AuthProvider, Protected, GuestOnly } from './lib/auth'
+import { BetsProvider } from './lib/bets'
 import {
-  BrowserRouter,
+  HashRouter,
   Routes,
   Route,
   Navigate,
@@ -19,22 +22,24 @@ import AppLayout from './layouts/AppLayout'
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
+      <AuthProvider>
       <Routes>
         <Route
           path="/"
-          element={<Navigate to="/login" replace />}
+          element={<Navigate to="/dashboard" replace />}
         />
 
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<GuestOnly><Login /></GuestOnly>} />
+        <Route path="/register" element={<GuestOnly><Register /></GuestOnly>} />
 
-        <Route element={<AppLayout />}>
+        <Route element={<Protected><BetsProvider><AppLayout /></BetsProvider></Protected>}>
           <Route path="/dashboard" element={<Dashboard />} />
 
           <Route path="/bets" element={<Bets />} />
 
           <Route path="/bets/new" element={<NewBet />} />
+          <Route path="/bets/import" element={<ImportBet />} />
 
           <Route
             path="/bets/:id/edit"
@@ -52,7 +57,8 @@ function App() {
           />
         </Route>
       </Routes>
-    </BrowserRouter>
+      </AuthProvider>
+    </HashRouter>
   )
 }
 
